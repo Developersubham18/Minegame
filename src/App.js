@@ -8,7 +8,7 @@ function App() {
       <footer className="flex justify-center items-center w-[100%] md:mx-auto  bottom-1 max-w-[1200px] ">
         {" "}
         <h1 className="font-semibold text-xl text-white">
-          Built with ❤️ by{" "}
+          Made with ❤️ by{" "}
           <a
             className="ml-2 underline text-primary "
             href="https://ashish4.vercel.app"
