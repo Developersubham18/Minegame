@@ -60,7 +60,7 @@ function Main() {
     <div className=" flex md:flex-row  flex-col-reverse gap-4 justify-around mt-10 mb-5 p-3">
       <div className="flex flex-col justify-center items-center text-white gap-5 mb-4">
         <div className="flex gap-3 justify-center items-center text-3xl">
-          <p className="font-bold">Total Score :</p>
+          <p className="font-bold">Total Scores :</p>
           <p className="font-semibold">{point} PTS</p>
         </div>
 
