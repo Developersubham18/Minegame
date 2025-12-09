@@ -1,70 +1,77 @@
-# Getting Started with Create React App
+# Minegame – Dockerized React App with Jenkins CI/CD
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Minegame is a React-based game application that is fully containerized and deployed using:
 
-## Available Scripts
+- **Docker** for packaging the app
+- **Docker Compose** for running the container
+- **Jenkins CI/CD pipeline** with **GitHub Webhook** for continuous deployment
+- **Docker Hub** as the container registry
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 1. Architecture Overview
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+**End-to-end flow (Continuous Deployment):**
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. **Developer pushes code** to the `master` branch of this GitHub repo.
+2. **GitHub Webhook** sends a notification to Jenkins.
+3. **Jenkins pipeline** (`Jenkinsfile`) is triggered:
+   - Clones the repo
+   - Builds the Docker image
+   - Tags & pushes the image to Docker Hub
+   - Runs `docker-compose` to redeploy the container
+4. **Updated container** is pulled and started via `docker-compose.yml`.
+5. The new version of **Minegame** is live in just a few seconds (≈10s depending on machine/network).
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 2. Prerequisites
 
-### `npm run build`
+Before you deploy, ensure you have:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- A **Linux server** (or any host) with:
+  - Docker installed
+  - Docker Compose installed
+- **Jenkins** installed on the same host (with permission to run Docker & Docker Compose)
+- A **Docker Hub** account
+- This repository cloned or accessible via Jenkins
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 3. Docker Setup
 
-### `npm run eject`
+This project uses a `dockerfile` (note the lowercase name) to containerize the React app.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 3.1. Build the Docker Image Manually (Optional)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+From the project root:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+# Build the image from the dockerfile
+`docker build -t mine_img -f dockerfile .`
 
-## Learn More
+# Run the container
+`docker run -d -p 3000:3000 --name minegame-container mine_img`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# React
+```
+npm install
+npm start
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Docker
+```
+docker build -t minegame-app .
+docker run -d -p 3000:3000 --name minegame-container minegame-app
+docker stop minegame-container
+docker rm minegame-container
+```
 
-### Code Splitting
+# Docker Compose
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+docker-compose up -d
+docker-compose down
+```
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
