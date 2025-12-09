@@ -1,3 +1,6 @@
+
+![Architecture Overview](./architecture.png)
+
 # Minegame – Dockerized React App with Jenkins CI/CD
 
 Minegame is a React-based game application that is fully containerized and deployed using:
@@ -24,6 +27,8 @@ Minegame is a React-based game application that is fully containerized and deplo
 5. The new version of **Minegame** is live in just a few seconds (≈10s depending on machine/network).
 
 ---
+
+![deployment Overview](./deployment.png)
 
 ## 2. Prerequisites
 
